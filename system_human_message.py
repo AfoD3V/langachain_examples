@@ -5,12 +5,13 @@ from langchain_core.messages import HumanMessage, SystemMessage
 
 load_dotenv()
 
+
 def main():
     model = init_chat_model("gpt-4o-mini", model_provider="openai")
 
     messages = [
         SystemMessage("Translate the following from Polish to English"),
-        HumanMessage("Hej jak siê masz?")
+        HumanMessage("Hej jak siê masz?"),
     ]
 
     response = model.invoke(messages)

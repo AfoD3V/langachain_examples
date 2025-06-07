@@ -5,12 +5,14 @@ from langchain_core.messages import HumanMessage, SystemMessage
 
 load_dotenv()
 
+
 def main():
     model = init_chat_model("gpt-4o-mini", model_provider="openai")
 
     messages = [
         SystemMessage("Translate the following from Polish to English"),
-        HumanMessage("""
+        HumanMessage(
+            """
                     Wiosna w kwietniu zbudzi³a siê z rana,
                     Wysz³a wprawdzie troszeczkê zaspana,
                     Lecz zajrza³a we wszystkie zak¹tki:
@@ -35,12 +37,14 @@ def main():
                     Posypa³y kwieciem ³¹ki,
                     Posypa³y klomby, grz¹dki
                     I skoñczy³y siê porz¹dki.
-                    """)
+                    """
+        ),
     ]
 
     # Stream output
     for token in model.stream(messages):
         print(token.content, end="")
+
 
 if __name__ == "__main__":
     main()
