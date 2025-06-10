@@ -16,9 +16,11 @@ def main():
     )
 
     lang_lst = ["Italian", "Japan", "German"]
-    
+
     for lang in lang_lst:
-        prompt = prompt_template.invoke({"language": lang, "text": "Czeœæ! Jak siê masz?"})
+        prompt = prompt_template.invoke(
+            {"language": lang, "text": "Czeœæ! Jak siê masz?"}
+        )
         response = model.invoke(prompt)
         print(response.content)
 
