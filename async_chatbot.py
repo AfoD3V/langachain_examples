@@ -8,10 +8,12 @@ from langchain_core.messages import HumanMessage
 load_dotenv()
 model = init_chat_model("gpt-4o-mini", model_provider="openai")
 
+
 # Define the function that calls the model
 async def call_model(state: MessagesState):
     response = await model.ainvoke(state["messages"])
     return {"messages": response}
+
 
 async def main():
     # Define a new graph
@@ -34,7 +36,10 @@ async def main():
         else:
             input_messages = [HumanMessage(query)]
             output = await app.ainvoke({"messages": input_messages}, config)
-            output["messages"][-1].pretty_print()  # output contains all messages in state
+            output["messages"][
+                -1
+            ].pretty_print()  # output contains all messages in state
+
 
 if __name__ == "__main__":
     asyncio.run(main())
