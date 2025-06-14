@@ -8,6 +8,7 @@ from typing import Sequence
 from langchain_core.messages import BaseMessage
 from langgraph.graph.message import add_messages
 from typing_extensions import Annotated, TypedDict
+from langchain_core.messages import SystemMessage, trim_messages
 
 load_dotenv()
 model = init_chat_model("gpt-4o-mini", model_provider="openai")
@@ -31,8 +32,23 @@ class State(TypedDict):
 
 # Define the function that calls the model
 def call_model(state: State):
-    prompt = prompt_template.invoke(state)
+
+    trimmer = trim_messages(
+        max_tokens=65,
+        strategy="last",
+        token_counter=model,
+        include_system=True,
+        allow_partial=False,
+        start_on="human",
+    )
+
+    trimmed_messages = trimmer.invoke(state["messages"])
+
+    prompt = prompt_template.invoke(
+        {"messages": trimmed_messages, "language": state["language"]}
+    )
     response = model.invoke(prompt)
+
     return {"messages": [response]}
 
 
